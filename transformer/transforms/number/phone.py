@@ -88,6 +88,7 @@ class PhoneNumberFormattingTransform(BaseTransform):
             'DE': 'Germany',
             'PT': 'Portugal',
             'BR': 'Brazil',
+            'IT': 'Italy'
         }
 
         return [
