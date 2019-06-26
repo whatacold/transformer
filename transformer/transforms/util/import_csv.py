@@ -71,6 +71,7 @@ class UtilImportCSVTransform(BaseTransform):
             output["line_items"] = this_line_item
         else:
             # we don't have headers, so need some line-item labels, but first need number of fields, so grab the first row....
+            # need to set up an exception for 1 column CSVs
             header_reader = csv.reader(response, dialect=dialect)
             row_1 = header_reader.next()
             if forced_header:
