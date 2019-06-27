@@ -33,7 +33,8 @@ class UtilImportCSVTransform(BaseTransform):
             "label": "CSV File",
         }
 
-    def transform(self, csv_url, forced_header, **kwargs):
+
+    def transform(self, csv_url, forced_header, forced_dialect, **kwargs):
         # Take a file input and output a set of line-item fields and a big string field
         # note use of temp file and lots of seek(0). This was required as Python file-type objects
         # don't support resetting the iterator back to 0.
@@ -55,6 +56,11 @@ class UtilImportCSVTransform(BaseTransform):
         # use csv utils to see if there is a dialect, if the file is malformed in anyway, this will fail and report that error to the user
         response.seek(0)
         dialect = csv.Sniffer().sniff(response.read())
+        csv.register_dialect('comma',delimiter=',')
+        csv.register_dialect('semicolon',delimiter=';')
+        if dialect.delimiter.isspace():
+            #delimeter couldn't be determined, use the value from the forced_dialect, which defaults to comma
+            dialect = csv.get_dialect(forced_dialect)
         response.seek(0)
         header = csv.Sniffer().has_header(response.read())
 
@@ -106,6 +112,18 @@ class UtilImportCSVTransform(BaseTransform):
                 'help_text': (
                     'By default, Import CSV File will try to determine if your file has a header row. '
                     'If you find in your Test Step that this did not work (the header field will be False), you can force it here by selecting yes.'
+                ),  # NOQA
+            },
+            {
+                'type': 'unicode',
+                'required': False,
+                'key': 'forced_dialect',
+                'choices': 'Comma Delimited,comma|Semicolon Delimited,semicolon|Excel,excel|Excel-Tab Delimited,exceltab',
+                'label': 'Type of CSV file',
+                "default": "comma",
+                'help_text': (
+                    'By default, Import CSV File will try to determine the type of your csv file . '
+                    'If you find in your Test Step that the parsing did not work, you can force it here by selecting your file type.'
                 ),  # NOQA
             },
         ]
