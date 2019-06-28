@@ -118,12 +118,12 @@ class UtilImportCSVTransform(BaseTransform):
                 'type': 'unicode',
                 'required': False,
                 'key': 'forced_dialect',
-                'choices': 'Comma Delimited,comma|Semicolon Delimited,semicolon|Excel,excel|Excel-Tab Delimited,exceltab',
+                'choices': 'comma|Comma Delimited,semicolon|Semicolon Delimited,excel|Excel Comma Delimited,exceltab|Excel Tab Delimited',
                 'label': 'Type of CSV file',
                 "default": "comma",
                 'help_text': (
-                    'By default, Import CSV File will try to determine the type of your csv file . '
-                    'If you find in your Test Step that the parsing did not work, you can force it here by selecting your file type.'
+                    'By default, Import CSV File will try to determine the type of your csv file. '
+                    'If you find in your Test Step that your CSV file was not recognized correctly, you can force it here by selecting your file type.'
                 ),  # NOQA
             },
         ]
